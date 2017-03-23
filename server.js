@@ -16,13 +16,18 @@ mongoose.connect('mongodb://localhost/blogSpring2016');
 var PostSchema = mongoose.Schema({
 	title:{type: String, required: true},
 	body: String,
-	tag:{type: String, enum: ['POLITICS', 'ECONOMY','EDUCATION','TECHNOLOGY']},//If using a tag this are the options
+	tag:{type: String, enum: ['HEALTH', 'ECONOMY','EDUCATION','TECHNOLOGY']},//If using a tag this are the options
 	posted: {type: Date, default: Date.now}
-});
+},{collection: 'post'}); /* Mongoose automaticaly 
+							names and pluralizes 
+							the collection name. 
+							Here we overwrite that. */
 
-//this will allow the user to create, find, remove or update instances
-var PostModel = mongoose.model("PostModel", PostSchema);//declaring PostModel and implement it based on the PostSchema
-														//makes sure to validate against PostSchema
+/* This will allow the user to create, find, remove or update instances.
+   Declaring PostModel and implement it based on the PostSchema.
+   Makes sure to validate against PostSchema. */
+var PostModel = mongoose.model("PostModel", PostSchema);	
+
 //serves static content from public directory
 app.use(express.static(__dirname + '/public'));
 
@@ -38,7 +43,10 @@ app.post("/api/blogpost", createPost);
 function createPost(req,res){
 	var post = req.body;
 	console.log(post);
-	PostModel.create(post); // inserts created post object coming from "var post" to the database
+	PostModel.create(post); /* inserts created 
+							   post object coming 
+							   from "var post" to 
+							   the database */
 	res.json(post);
 }
 
