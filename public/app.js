@@ -8,9 +8,27 @@
 		// listens to the createPost handler on the ng-click sent from th UI
 		$scope.createPost = createPost;
 
+	function init(){
+		getAllPosts();
+	}
+	
+	init();
+
+	
+	function getAllPosts (){
+		$http
+			.get('/api/blogpost')
+			.success(function(posts){
+				$scope.posts = posts;
+			});
+	}
+
+
 	function createPost(post){
 		console.log(post);
-		$http.post("/api/blogpost", post);
+		$http
+			.post("/api/blogpost", post)
+			.success(getAllPosts);
 		}
 	}
 })();
