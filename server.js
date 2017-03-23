@@ -16,9 +16,9 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/blogSpring2016');
 
 var PostSchema = mongoose.Schema({
-	type: String, required:true
-	title: String,
+	title:{type: String, required: true}
 	body: String,
+	tag:{type: String, enum: ['POLITICS', 'ECONOMY','EDUCATION','TECHNOLOGY']},//If using a tag this are the options
 	posted: {type: Date, default: Date.now}
 });
 
