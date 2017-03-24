@@ -5,16 +5,21 @@
 		.controller("BlogController", BlogController);
 
 	function BlogController($scope, $http){
-		// listens to the createPost handler on the ng-click sent from the submit button
+		
+		// listeners
 		$scope.createPost = createPost;
-
 		$scope.deletePost = deletePost;
+		$scope.editPost = editPost;
 
 	function init(){
 		getAllPosts();
 	}
 	
 	init();
+
+	function editPost (postId){
+		$http.get("/api/blogpost/"+postId);
+	}
 
 	function deletePost(postId){
 		$http.delete("/api/blogpost/"+postId)

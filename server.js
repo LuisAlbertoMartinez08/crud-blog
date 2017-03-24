@@ -47,8 +47,23 @@ app.post("/api/blogpost", createPost);
 //server listens for request to gather all posts
 app.get("/api/blogpost", getAllPosts);
 
+app.get("/api/blogpost/:id",getPostById);
+
 //server listens for a delete request
 app.delete("/api/blogpost/:id", deletePost);
+
+function getPostById(req,res){
+	var postId = req.params.id;
+	PostModel
+			.find({_id: postId})
+			.then(
+				function(post){
+				  res.json(post);
+			},
+			function(err){
+				res.sendStatus(400);
+			});
+}
 
 function deletePost (req,res){
 	var postId = req.params.id;
