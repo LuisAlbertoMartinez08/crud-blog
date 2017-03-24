@@ -10,6 +10,7 @@
 		$scope.createPost = createPost;
 		$scope.deletePost = deletePost;
 		$scope.editPost = editPost;
+		$scope.updatePost = updatePost;
 
 	function init(){
 		getAllPosts();
@@ -17,8 +18,19 @@
 	
 	init();
 
+	function updatePost(post){
+		console.log(post);
+		$http
+			.put("api/blogpost/"+post._id,post)
+			.success(getAllPosts);
+	}
+
 	function editPost (postId){
-		$http.get("/api/blogpost/"+postId);
+		$http
+			.get("/api/blogpost/"+postId)
+			.success(function(post){
+				$scope.post = post;
+			});
 	}
 
 	function deletePost(postId){

@@ -47,15 +47,38 @@ app.post("/api/blogpost", createPost);
 //server listens for request to gather all posts
 app.get("/api/blogpost", getAllPosts);
 
+//grabs post by Id to edit it 
 app.get("/api/blogpost/:id",getPostById);
 
 //server listens for a delete request
 app.delete("/api/blogpost/:id", deletePost);
 
+//server listens for a update request
+app.put("/api/blogpost/:id",updatePost);
+
+
+function updatePost(req,res){
+	var postId = req.params.id;
+	var post = req.body;
+	PostModel
+	.update({_id: postId},{
+		title:post.title,
+		body:post.body
+	})
+	.then(
+		function(status){
+			res.sendStatus(200);
+		},
+		function(err){
+			res.sendStatus(400);
+	});
+}
+
+
 function getPostById(req,res){
 	var postId = req.params.id;
 	PostModel
-			.find({_id: postId})
+			.findById(postId)
 			.then(
 				function(post){
 				  res.json(post);
