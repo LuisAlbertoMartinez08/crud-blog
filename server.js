@@ -10,8 +10,12 @@ var bodyParser = require('body-parser');
 //getting mongo ready
 var mongoose = require('mongoose');
 
+mongoose.Promise = Promise
+
 //connecting to the mongo database
 mongoose.connect('mongodb://localhost/blogSpring2016');
+
+// var Promise = require("bluebird");
 
 var PostSchema = mongoose.Schema({
 	title:{type: String, required: true},
@@ -40,7 +44,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //server listening for new post on this route
 app.post("/api/blogpost", createPost);
 
+//server listens for request to gather all posts
 app.get("/api/blogpost", getAllPosts);
+
+//server listens for a delete request
+app.delete("/api/blogpost/:id", deletePost);
+
+function deletePost (req,res){
+	var postId = req.params.id;
+	PostModel
+			.remove({_id: postId})
+			.then(
+				function(status){
+					res.sendStatus(200);
+				},
+				function(){
+					res.sendStatus(400);
+				});
+}
 
 function getAllPosts(req,res){
 	PostModel
